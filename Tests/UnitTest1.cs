@@ -2,10 +2,12 @@ using DataAccess;
 using Models;
 using Services;
 using Moq;
+
 namespace Tests;
 
+
 public class UnitTest1{
-    
+    string conn = Secrets.getConnectionString();
 
 
     [Fact]
@@ -33,7 +35,7 @@ public class UnitTest1{
 
     [Fact]
     public void AddUser()
-{
+{   
     // Arrange
         User newUser = new();
         newUser.FirstName = "Test";
@@ -44,12 +46,12 @@ public class UnitTest1{
         var mockRepo = new Mock<IRepository>();
         var _service = new UserServices(mockRepo.Object);
         
-
+        
         _service.CreateAccount(newUser);
 
         var currentUser = _service.CreateAccount(newUser);
     
-        var dBRepo = new DBRepository();
+        var dBRepo = new DBRepository(conn);
 
         dBRepo.AddUser(currentUser);
 
@@ -182,6 +184,8 @@ public class UnitTest1{
         Marketplace marketplace = new Marketplace(2,1,10,1200,3);
 
         Assert.NotNull(marketplace.ToString());
+
+        
     }
 
 }
